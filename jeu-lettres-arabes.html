@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>🎮 Jeux des lettres arabes</title>
+
+<style>
+
+/* ===== STYLE GENERAL ===== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #dff6ff, #f3e8ff);
+    color: #222;
+    text-align: center;
+}
+
+header {
+    background: #2525a8;
+    color: white;
+    padding: 25px;
+    box-shadow: 0 4px 10px #999;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 35px;
+}
+
+header p {
+    margin-bottom: 0;
+    font-size: 18px;
+}
+
+
+/* ===== MENU ===== */
+
+#menu {
+    padding: 30px 15px;
+}
+
+.menu-button {
+    display: block;
+    width: 280px;
+    margin: 15px auto;
+    padding: 18px;
+    font-size: 20px;
+    border: none;
+    border-radius: 15px;
+    background: #3030d0;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 5px 10px #aaa;
+}
+
+.menu-button:hover {
+    background: #17179b;
+    transform: scale(1.03);
+}
+
+
+/* ===== JEUX ===== */
+
+.game {
+    display: none;
+    max-width: 700px;
+    margin: 30px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px #aaa;
+}
+
+.game h2 {
+    color: #2525a8;
+    font-size: 30px;
+}
+
+.question {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 25px;
+}
+
+.score {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+/* ===== LETTRES ===== */
+
+.arabic-letter {
+    font-size: 80px;
+    margin: 20px;
+    font-weight: bold;
+}
+
+
+/* ===== BOUTONS REPONSES ===== */
+
+.answers {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.answer {
+    width: 100px;
+    height: 100px;
+    font-size: 50px;
+    border: none;
+    border-radius: 20px;
+    background: #3030d0;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 5px 10px #aaa;
+}
+
+.answer:hover {
+    background: #16a34a;
+    transform: scale(1.08);
+}
+
+
+/* ===== AUTRES BOUTONS ===== */
+
+.normal-button {
+    padding: 12px 25px;
+    margin: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    background: #2525a8;
+    color: white;
+    cursor: pointer;
+}
+
+.normal-button:hover {
+    background: #17179b;
+}
+
+
+/* ===== MESSAGE ===== */
+
+#message {
+    font-size: 22px;
+    font-weight: bold;
+    min-height: 30px;
+    margin: 15px;
+}
+
+
+/* ===== FIN ===== */
+
+#fin {
+    display: none;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 35px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px #aaa;
+}
+
+#fin h2 {
+    color: #2525a8;
+}
+
+#resultat {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+
+/* ===== MOBILE ===== */
+
+@media (max-width: 600px) {
+
+    header h1 {
+        font-size: 28px;
+    }
+
+    .game {
+        margin: 15px;
+        padding: 20px;
+    }
+
+    .answer {
+        width: 85px;
+        height: 85px;
+        font-size: 42px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- ============================= -->
+<!-- EN-TETE -->
+<!-- ============================= -->
+
+<header>
+
+<h1>🎮 Jeux des lettres arabes</h1>
+
+<p>Apprends les lettres arabes en jouant !</p>
+
+</header>
+
+
+<!-- ============================= -->
+<!-- MENU PRINCIPAL -->
+<!-- ============================= -->
+
+<div id="menu">
+
+<h2>Choisis un mini-jeu 👇</h2>
+
+<button class="menu-button" onclick="ouvrirJeu(1)">
+🔤 Jeu 1 : Trouve la lettre
+</button>
+
+<button class="menu-button" onclick="ouvrirJeu(2)">
+🧠 Jeu 2 : Reconnais la lettre
+</button>
+
+<button class="menu-button" onclick="ouvrirJeu(3)">
+⚡ Jeu 3 : Défi rapide
+</button>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- JEU 1 -->
+<!-- ============================= -->
+
+<div id="jeu1" class="game">
+
+<h2>🔤 Trouve la lettre</h2>
+
+<p class="score">
+Score : <span id="score1">0</span>
+</p>
+
+<p class="question">
+Quelle lettre correspond à :
+</p>
+
+<p id="nomLettre" class="question">
+ba
+</p>
+
+<div id="reponses1" class="answers"></div>
+
+<p id="message1"></p>
+
+<button class="normal-button" onclick="retourMenu()">
+🏠 Menu
+</button>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- JEU 2 -->
+<!-- ============================= -->
+
+<div id="jeu2" class="game">
+
+<h2>🧠 Reconnais la lettre</h2>
+
+<p class="score">
+Score : <span id="score2">0</span>
+</p>
+
+<p class="question">
+Quelle est cette lettre ?
+</p>
+
+<p id="lettreQuestion" class="arabic-letter">
+ب
+</p>
+
+<div id="reponses2" class="answers"></div>
+
+<p id="message2"></p>
+
+<button class="normal-button" onclick="retourMenu()">
+🏠 Menu
+</button>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- JEU 3 -->
+<!-- ============================= -->
+
+<div id="jeu3" class="game">
+
+<h2>⚡ Défi rapide</h2>
+
+<p class="score">
+Score : <span id="score3">0</span>
+</p>
+
+<p>
+Tu as 30 secondes !
+</p>
+
+<p class="question">
+Quelle lettre correspond à :
+</p>
+
+<p id="nomLettre3" class="question">
+alif
+</p>
+
+<div id="reponses3" class="answers"></div>
+
+<p id="temps">
+⏱️ 30 secondes
+</p>
+
+<p id="message3"></p>
+
+<button class="normal-button" onclick="retourMenu()">
+🏠 Menu
+</button>
+
+</div>
+
+
+<!-- ============================= -->
+<!-- ECRAN DE FIN -->
+<!-- ============================= -->
+
+<div id="fin">
+
+<h2>🏆 Partie terminée !</h2>
+
+<p id="resultat"></p>
+
+<button class="normal-button" onclick="retourMenu()">
+🏠 Retour au menu
+</button>
+
+</div>
+
+
+<script>
+
+
+/* =====================================
+   LISTE DES LETTRES
+===================================== */
+
+const lettres = [
+    { nom: "alif", lettre: "ا" },
+    { nom: "ba", lettre: "ب" },
+    { nom: "ta", lettre: "ت" },
+    { nom: "tha", lettre: "ث" },
+    { nom: "jim", lettre: "ج" },
+    { nom: "ha", lettre: "ح" },
+    { nom: "kha", lettre: "خ" },
+    { nom: "dal", lettre: "د" },
+    { nom: "dhal", lettre: "ذ" },
+    { nom: "ra", lettre: "ر" },
+    { nom: "zay", lettre: "ز" },
+    { nom: "sin", lettre: "س" },
+    { nom: "shin", lettre: "ش" },
+    { nom: "sad", lettre: "ص" },
+    { nom: "dad", lettre: "ض" },
+    { nom: "ta emphatique", lettre: "ط" },
+    { nom: "dha", lettre: "ظ" },
+    { nom: "ayn", lettre: "ع" },
+    { nom: "ghayn", lettre: "غ" },
+    { nom: "fa", lettre: "ف" },
+    { nom: "qaf", lettre: "ق" },
+    { nom: "kaf", lettre: "ك" },
+    { nom: "lam", lettre: "ل" },
+    { nom: "mim", lettre: "م" },
+    { nom: "nun", lettre: "ن" },
+    { nom: "ha", lettre: "ه" },
+    { nom: "waw", lettre: "و" },
+    { nom: "ya", lettre: "ي" }
+];
+
+
+/* =====================================
+   MELANGER UNE LISTE
+===================================== */
+
+function melanger(tableau) {
+
+    return tableau.sort(() => Math.random() - 0.5);
+
+}
+
+
+/* =====================================
+   CHANGER DE JEU
+===================================== */
+
+function ouvrirJeu(numero) {
+
+    document.getElementById("menu").style.display = "none";
+
+    document.getElementById("jeu1").style.display = "none";
+    document.getElementById("jeu2").style.display = "none";
+    document.getElementById("jeu3").style.display = "none";
+
+    document.getElementById("fin").style.display = "none";
+
+    document.getElementById("jeu" + numero).style.display = "block";
+
+
+    if (numero === 1) {
+        commencerJeu1();
+    }
+
+    if (numero === 2) {
+        commencerJeu2();
+    }
+
+    if (numero === 3) {
+        commencerJeu3();
+    }
+
+}
+
+
+/* =====================================
+   RETOUR AU MENU
+===================================== */
+
+function retourMenu() {
+
+    document.getElementById("menu").style.display = "block";
+
+    document.getElementById("jeu1").style.display = "none";
+    document.getElementById("jeu2").style.display = "none";
+    document.getElementById("jeu3").style.display = "none";
+
+    document.getElementById("fin").style.display = "none";
+
+}
+
+
+/* =====================================
+   JEU 1
+   NOM → LETTRE
+===================================== */
+
+let score1 = 0;
+let position1 = 0;
+
+
+function commencerJeu1() {
+
+    score1 = 0;
+    position1 = 0;
+
+    document.getElementById("score1").textContent = score1;
+
+    nouvelleQuestion1();
+
+}
+
+
+function nouvelleQuestion1() {
+
+    let bonne = lettres[position1];
+
+    document.getElementById("nomLettre").textContent = bonne.nom;
+
+    let choix = [bonne];
+
+    while (choix.length < 3) {
+
+        let hasard = lettres[
+            Math.floor(Math.random() * lettres.length)
+        ];
+
+        if (!choix.includes(hasard)) {
+            choix.push(hasard);
+        }
+
+    }
+
+    melanger(choix);
+
+    let zone = document.getElementById("reponses1");
+
+    zone.innerHTML = "";
+
+
+    choix.forEach(function(element) {
+
+        let bouton = document.createElement("button");
+
+        bouton.className = "answer";
+
+        bouton.textContent = element.lettre;
+
+        bouton.onclick = function() {
+
+            if (element === bonne) {
+
+                score1++;
+
+                document.getElementById("score1").textContent = score1;
+
+                document.getElementById("message1").textContent =
+                    "✅ Bravo !";
+
+                position1++;
+
+                if (position1 >= lettres.length) {
+                    position1 = 0;
+                }
+
+                setTimeout(nouvelleQuestion1, 500);
+
+            } else {
+
+                document.getElementById("message1").textContent =
+                    "❌ Mauvaise réponse !";
+
+            }
+
+        };
+
+        zone.appendChild(bouton);
+
+    });
+
+}
+
+
+/* =====================================
+   JEU 2
+   LETTRE → NOM
+===================================== */
+
+let score2 = 0;
+let position2 = 0;
+
+
+function commencerJeu2() {
+
+    score2 = 0;
+    position2 = 0;
+
+    document.getElementById("score2").textContent = score2;
+
+    nouvelleQuestion2();
+
+}
+
+
+function nouvelleQuestion2() {
+
+    let bonne = lettres[position2];
+
+    document.getElementById("lettreQuestion").textContent =
+        bonne.lettre;
+
+    let choix = [bonne.nom];
+
+
+    while (choix.length < 3) {
+
+        let hasard = lettres[
+            Math.floor(Math.random() * lettres.length)
+        ].nom;
+
+        if (!choix.includes(hasard)) {
+            choix.push(hasard);
+        }
+
+    }
+
+    melanger(choix);
+
+    let zone = document.getElementById("reponses2");
+
+    zone.innerHTML = "";
+
+
+    choix.forEach(function(nom) {
+
+        let bouton = document.createElement("button");
+
+        bouton.className = "normal-button";
+
+        bouton.textContent = nom;
+
+        bouton.onclick = function() {
+
+            if (nom === bonne.nom) {
+
+                score2++;
+
+                document.getElementById("score2").textContent =
+                    score2;
+
+                document.getElementById("message2").textContent =
+                    "✅ Bravo !";
+
+                position2++;
+
+                if (position2 >= lettres.length) {
+                    position2 = 0;
+                }
+
+                setTimeout(nouvelleQuestion2, 500);
+
+            } else {
+
+                document.getElementById("message2").textContent =
+                    "❌ Mauvaise réponse !";
+
+            }
+
+        };
+
+        zone.appendChild(bouton);
+
+    });
+
+}
+
+
+/* =====================================
+   JEU 3
+   DEFIS DE 30 SECONDES
+===================================== */
+
+let score3 = 0;
+let position3 = 0;
+let temps3 = 30;
+let intervalle3;
+
+
+function commencerJeu3() {
+
+    score3 = 0;
+    position3 = 0;
+    temps3 = 30;
+
+    document.getElementById("score3").textContent = score3;
+
+    document.getElementById("temps").textContent =
+        "⏱️ 30 secondes";
+
+    nouvelleQuestion3();
+
+
+    clearInterval(intervalle3);
+
+    intervalle3 = setInterval(function() {
+
+        temps3--;
+
+        document.getElementById("temps").textContent =
+            "⏱️ " + temps3 + " secondes";
+
+
+        if (temps3 <= 0) {
+
+            clearInterval(intervalle3);
+
+            document.getElementById("jeu3").style.display = "none";
+
+            document.getElementById("fin").style.display = "block";
+
+            document.getElementById("resultat").textContent =
+                "Tu as trouvé " + score3 + " lettres ! 🏆";
+
+        }
+
+    }, 1000);
+
+}
+
+
+function nouvelleQuestion3() {
+
+    let bonne = lettres[position3];
+
+    document.getElementById("nomLettre3").textContent =
+        bonne.nom;
+
+    let choix = [bonne];
+
+    while (choix.length < 3) {
+
+        let hasard = lettres[
+            Math.floor(Math.random() * lettres.length)
+        ];
+
+        if (!choix.includes(hasard)) {
+            choix.push(hasard);
+        }
+
+    }
+
+    melanger(choix);
+
+    let zone = document.getElementById("reponses3");
+
+    zone.innerHTML = "";
+
+
+    choix.forEach(function(element) {
+
+        let bouton = document.createElement("button");
+
+        bouton.className = "answer";
+
+        bouton.textContent = element.lettre;
+
+        bouton.onclick = function() {
+
+            if (element === bonne) {
+
+                score3++;
+
+                document.getElementById("score3").textContent =
+                    score3;
+
+                position3++;
+
+                if (position3 >= lettres.length) {
+                    position3 = 0;
+                }
+
+                nouvelleQuestion3();
+
+            } else {
+
+                document.getElementById("message3").textContent =
+                    "❌";
+
+            }
+
+        };
+
+        zone.appendChild(bouton);
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
